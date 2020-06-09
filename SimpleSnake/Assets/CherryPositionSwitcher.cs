@@ -4,88 +4,54 @@ using UnityEngine;
 
 public class CherryPositionSwitcher : MonoBehaviour
 {
-    public SpriteRenderer cherry;
+    public SpriteRenderer food;
     public SnakeMovement snakeMovementScript;
+
     public SpriteRenderer wallTop;
     public SpriteRenderer wallBot;
     public SpriteRenderer wallRight;
     public SpriteRenderer wallLeft;
 
-    private float maxY;
-    private float maxX;
-    private float minY;
-    private float minX;
+    private float maxFoodY;
+    private float maxFoodX;
+    private float minFoodY;
+    private float minFoodX;
     
     // Start is called before the first frame update
     void Start()
     {
         snakeMovementScript = GameObject.Find("snakehead").GetComponent<SnakeMovement>();
-        cherry = GetComponent<SpriteRenderer>();
-        wallTop = GetComponent<SpriteRenderer>();
-        wallBot = GetComponent<SpriteRenderer>();
-        wallRight = GetComponent<SpriteRenderer>();
-        wallLeft = GetComponent<SpriteRenderer>();
 
-        minX = wallLeft.transform.position.x + 1;
-        maxX = wallRight.transform.position.x - 1;
-        minY = wallBot.transform.position.y + 1;
-        maxY = wallBot.transform.position.y - 1;
+        minFoodX = wallLeft.gameObject.transform.localPosition.x+1;
+        maxFoodX = wallRight.gameObject.transform.localPosition.x-1;
+        minFoodY = wallBot.gameObject.transform.localPosition.y+1;
+        maxFoodY = wallTop.gameObject.transform.localPosition.y-1;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(cherry != null)
+        if(food != null)
         {
-            float[] xy = possibleRandom();
-            Vector2 newCherryPosition = new Vector2(xy[0], xy[1]);
-            cherry.transform.position = newCherryPosition;
+            float[] newFoodXY = possibleRandomXY();
+            Vector2 newCherryPosition = new Vector2(newFoodXY[0], newFoodXY[1]);
+            food.transform.position = newCherryPosition;
         }
     }
 
-    private float[] possibleRandom()
+    private float[] possibleRandomXY()
     {
+        float[] finalFoodXY = new float[2];
         bool isNotValid = true;
-        float[] xy = new float[2];
 
         //TO-DO: Add check if Snake is not placed!
-        while (isNotValid)
+        while(isNotValid)
         {
-            float x = Random.Range(minX, maxX);
-            float y = Random.Range(minX, maxX);
-            xy = convertIntoRealCoordinates((int) x, (int) y);
+            float x = Random.Range(minFoodX, maxFoodX);
+            float y = Random.Range(minFoodY, maxFoodY);
+            finalFoodXY[0] = (int)x + 0.5F;
+            finalFoodXY[1] = (int)y + 0.5F;
             isNotValid = false;
         }
-        return xy;
-    }
-
-    //TO-DO: Testing!!
-    private float[] convertIntoRealCoordinates(int x, int y)
-    {
-        float[] newXY = new float[2];
-        float newX = 0F;
-        float newY = 0F;
-
-        if(x < -9)
-        {
-            newX = -10.5F;
-        }
-        else
-        {
-            newX = x + 0.5F;
-        }
-
-        if (y < -3)
-        {
-            newY = -4.5F;
-        }
-        else
-        {
-            newY = y + 0.5F;
-        }
-
-        newXY[0] = newX;
-        newXY[1] = newY;
-
-        return newXY;
+        return finalFoodXY;
     }
 }
