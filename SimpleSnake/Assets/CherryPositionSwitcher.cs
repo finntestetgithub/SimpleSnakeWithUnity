@@ -10,6 +10,11 @@ public class CherryPositionSwitcher : MonoBehaviour
     public SpriteRenderer wallBot;
     public SpriteRenderer wallRight;
     public SpriteRenderer wallLeft;
+
+    private float maxY;
+    private float maxX;
+    private float minY;
+    private float minX;
     
     // Start is called before the first frame update
     void Start()
@@ -20,31 +25,67 @@ public class CherryPositionSwitcher : MonoBehaviour
         wallBot = GetComponent<SpriteRenderer>();
         wallRight = GetComponent<SpriteRenderer>();
         wallLeft = GetComponent<SpriteRenderer>();
+
+        minX = wallLeft.transform.position.x + 1;
+        maxX = wallRight.transform.position.x - 1;
+        minY = wallBot.transform.position.y + 1;
+        maxY = wallBot.transform.position.y - 1;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(cherry != null)
         {
-            //cherry.transform.
+            float[] xy = possibleRandom();
+            Vector2 newCherryPosition = new Vector2(xy[0], xy[1]);
+            cherry.transform.position = newCherryPosition;
         }
     }
 
-    private void possibleRandom()
+    private float[] possibleRandom()
     {
         bool isNotValid = true;
+        float[] xy = new float[2];
+
+        //TO-DO: Add check if Snake is not placed!
         while (isNotValid)
         {
-            float x = Random.Range(wallLeft.transform.position.x + 1, wallRight.transform.position.x - 1);
-            float y = Random.Range(wallBot.transform.position.x + 1, wallTop.transform.position.y - 1);
-
-            int xRounded = (int)x;
-            int yRounded = (int)y;
-
-            if(x % xRounded > 0.5)
-            {
-                //x = (x)
-            }
+            float x = Random.Range(minX, maxX);
+            float y = Random.Range(minX, maxX);
+            xy = convertIntoRealCoordinates((int) x, (int) y);
+            isNotValid = false;
         }
+        return xy;
+    }
+
+    //TO-DO: Testing!!
+    private float[] convertIntoRealCoordinates(int x, int y)
+    {
+        float[] newXY = new float[2];
+        float newX = 0F;
+        float newY = 0F;
+
+        if(x < -9)
+        {
+            newX = -10.5F;
+        }
+        else
+        {
+            newX = x + 0.5F;
+        }
+
+        if (y < -3)
+        {
+            newY = -4.5F;
+        }
+        else
+        {
+            newY = y + 0.5F;
+        }
+
+        newXY[0] = newX;
+        newXY[1] = newY;
+
+        return newXY;
     }
 }

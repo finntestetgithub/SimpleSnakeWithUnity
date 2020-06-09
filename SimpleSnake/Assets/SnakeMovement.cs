@@ -57,7 +57,11 @@ public class SnakeMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isAlive = false;
-        snakeHead.transform.position = new Vector2(-9.5F, 1.5F);
+        if (!collision.collider.gameObject.CompareTag("Food"))
+        {
+            snakeHead.transform.position = new Vector2(-9.5F, 1.5F);
+            Destroy(snakeHead);
+            isAlive = false;
+        }
     }
 }
