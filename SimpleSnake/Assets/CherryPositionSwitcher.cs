@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Script for switching the food (cherry) position after collision with snake
 public class CherryPositionSwitcher : MonoBehaviour
 {
     public SpriteRenderer food;
@@ -17,7 +18,7 @@ public class CherryPositionSwitcher : MonoBehaviour
     private float minFoodY;
     private float minFoodX;
     
-    // Start is called before the first frame update
+    //Initialisation
     void Start()
     {
         snakeMovementScript = GameObject.Find("snakehead").GetComponent<SnakeMovement>();
@@ -32,26 +33,30 @@ public class CherryPositionSwitcher : MonoBehaviour
     {
         if(food != null)
         {
-            float[] newFoodXY = possibleRandomXY();
-            Vector2 newCherryPosition = new Vector2(newFoodXY[0], newFoodXY[1]);
-            food.transform.position = newCherryPosition;
+            food.transform.position = PossibleRandomXY();
         }
     }
 
-    private float[] possibleRandomXY()
+    //Calculates random xy-coordinates of new food.
+    //Checks if food is inside of the borders + not colliding with snake.
+    private Vector2 PossibleRandomXY()
     {
-        float[] finalFoodXY = new float[2];
+        Vector2 xy = new Vector2(0, 0);
         bool isNotValid = true;
 
-        //TO-DO: Add check if Snake is not placed!
         while(isNotValid)
         {
+            LinkedList<Vector2> snakeBodyPositions = snakeMovementScript.getSnakeBodyPosition();
+
             float x = Random.Range(minFoodX, maxFoodX);
             float y = Random.Range(minFoodY, maxFoodY);
-            finalFoodXY[0] = (int)x + 0.5F;
-            finalFoodXY[1] = (int)y + 0.5F;
-            isNotValid = false;
+
+            xy = new Vector2((int)x + 0.5F, (int)y + 0.5F);
+
+            if(!snakeBodyPositions.Contains(xy)){
+                isNotValid = false;
+            }
         }
-        return finalFoodXY;
+        return xy;
     }
 }

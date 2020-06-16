@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakeHead: {fileID: 34299257}
+  snakeBody: {fileID: 5483437835253642875, guid: 2d9b80a46621df94d8f0d0b407f07dc4,
+    type: 3}
 --- !u!50 &34299257
 Rigidbody2D:
   serializedVersion: 4
@@ -316,7 +318,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.09386444}
+  m_Offset: {x: 0.029746056, y: 0.09386444}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -327,7 +329,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.456811, y: 4.081352}
+  m_Size: {x: 4.1593485, y: 4.081352}
   m_EdgeRadius: 0
 --- !u!212 &309963140
 SpriteRenderer:
@@ -405,7 +407,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.72759265
+  m_Mass: 0.6790307
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
